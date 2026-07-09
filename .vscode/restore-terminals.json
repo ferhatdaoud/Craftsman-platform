@@ -1,0 +1,27 @@
+{
+  "restoreTerminals.runOnStartup": true,
+  "restoreTerminals.keepExistingTerminalsOpen": false,
+  "restoreTerminals.artificialDelayMilliseconds": 500,
+  "terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "frontend",
+          "commands": ["cd frontend", "npm run dev"]
+        },
+        {
+          "name": "backend",
+          "commands": ["cd backend", "npm run dev"]
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "Git & Tools",
+          "commands": ["git status"]
+        }
+      ]
+    }
+  ]
+}
