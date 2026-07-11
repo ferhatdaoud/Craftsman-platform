@@ -1,5 +1,6 @@
 import type { Route } from "./+types/index";
-import Login from "../Login";
+import { ArrowRight, Link, Wrench } from "lucide-react";
+import { Button } from "@base-ui/react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,7 +10,6 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <div>home</div>;
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
@@ -121,7 +121,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
+            {/* {features.map((feature, index) => (
               <div
                 key={index}
                 className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-shadow"
@@ -130,7 +130,7 @@ export default function Home() {
                 <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
                 <p className="text-muted-foreground">{feature.description}</p>
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
       </section>
@@ -146,7 +146,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+            {/* {testimonials.map((testimonial, index) => (
               <div
                 key={index}
                 className="bg-card border border-border rounded-xl p-8"
@@ -171,7 +171,7 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
       </section>

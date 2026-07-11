@@ -1,16 +1,30 @@
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Wrench } from "lucide-react";
-import { Link } from "react-router"; // React Router Link component
+import { Link, useNavigate } from "react-router"; // React Router Link component
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type SubmitHandler } from "react-hook-form";
 export const RegisterSchema = z.object({
   name: z.string().min(3, "Name must at least 4 characters"),
   email: z.string().email("invalid email adress"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+type RegisterInput = z.infer<typeof RegisterSchema>;
 
 export default function RegisterPage() {
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<RegisterInput>({
+    resolver: zodResolver(RegisterSchema),
+  });
+  const onSubmit: SubmitHandler<RegisterInput> = (data) => {
+    console.log("valid data submoiter salefy", data);
+  };
+  
   return (
     <div className="min-h-screen bg-linear-to-br from-background via-secondary/20 to-background flex flex-col">
       {/* Header */}
@@ -42,55 +56,40 @@ export default function RegisterPage() {
               </p>
             </div>
 
-            {/* Form */}
-            <form className="space-y-4">
+            {/* Form - connected to handleSubmit */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Full Name
-                </label>
-                <Input
-                  type="text"
-                  name="name"
-                  placeholder="John Doe"
-                  className="w-full"
-                  required
-                />
+                <label>Name</label>
+                {/* We register "email" - TypeScript checked! */}
+                <Input {...register("name")} className="border p-2 block" />
+                {errors.name && (
+                  <p style={{ color: "red" }}>{errors.name.message}</p>
+                )}
+              </div>
+              <div>
+                <label>Email</label>
+                {/* We register "email" - TypeScript checked! */}
+                <Input {...register("email")} className="border p-2 block" />
+                {errors.email && (
+                  <p style={{ color: "red" }}>{errors.email.message}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Email Address
-                </label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  className="w-full"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Password
-                </label>
+                <label>Password</label>
+                {/* We register "password" - TypeScript checked! */}
                 <Input
                   type="password"
-                  name="password"
-                  placeholder="••••••••"
-                  className="w-full"
-                  required
+                  {...register("password")}
+                  className="border p-2 block"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Minimum 6 characters
-                </p>
+                {errors.password && (
+                  <p style={{ color: "red" }}>{errors.password.message}</p>
+                )}
               </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium h-10 mt-6"
-              >
-                Create Account
+              <Button type="submit" className="bg-blue-500 text-white p-2">
+                Submit
               </Button>
             </form>
 

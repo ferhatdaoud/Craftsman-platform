@@ -5,4 +5,5 @@ export default [
   route("dashboard", "routes/dashboard/index.tsx"),
   route("login", "routes/login/index.tsx"),
   route("register", "routes/register/index.tsx"),
+  // route("home", "routes/home/index.tsx"),
 ] satisfies RouteConfig;
