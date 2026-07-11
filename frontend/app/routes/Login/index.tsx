@@ -3,8 +3,11 @@ import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Demo from "@/components/Demo";
+import { useSearchParams } from "react-router";
 
 export default function login() {
+  const [searchParams] = useSearchParams();
+  const hasRegistered = searchParams.get("registered") === "true";
   return (
     <div className="min-h-screen bg-linear-to-br from-background via-secondary/20 to-background flex flex-col">
       <Header />
@@ -21,7 +24,11 @@ export default function login() {
                 Find skilled craftsmen in your area
               </p>
             </div>
-
+            {hasRegistered && (
+              <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-sm text-green-500 text-center">
+                Registration successful! Please log in below.
+              </div>
+            )}
             {/* Form */}
             <form className="space-y-4">
               <div>

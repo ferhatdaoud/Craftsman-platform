@@ -2,29 +2,54 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Wrench } from "lucide-react";
 import { Link, useNavigate } from "react-router"; // React Router Link component
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
+
+interface RegisterSchema {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export const RegisterSchema = z.object({
   name: z.string().min(3, "Name must at least 4 characters"),
   email: z.string().email("invalid email adress"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 type RegisterInput = z.infer<typeof RegisterSchema>;
-
 export default function RegisterPage() {
+  const queryClient = useQueryClient();
   const {
     register,
     watch,
+    reset,
     formState: { errors },
     handleSubmit,
   } = useForm<RegisterInput>({
     resolver: zodResolver(RegisterSchema),
   });
+  const navigate = useNavigate();
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (formData: RegisterInput) => {
+      const responce = await axios.post(
+        "http://localhost:5000/api/register",
+        formData,
+      );
+      return responce.data;
+    },
+    onSuccess: () => {
+      navigate("/login?registered=true");
+      reset();
+    },
+  });
+
   const onSubmit: SubmitHandler<RegisterInput> = (data) => {
     console.log("valid data submoiter salefy", data);
+    mutate(data);
   };
-  
   return (
     <div className="min-h-screen bg-linear-to-br from-background via-secondary/20 to-background flex flex-col">
       {/* Header */}
@@ -60,7 +85,6 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
               <div>
                 <label>Name</label>
-                {/* We register "email" - TypeScript checked! */}
                 <Input {...register("name")} className="border p-2 block" />
                 {errors.name && (
                   <p style={{ color: "red" }}>{errors.name.message}</p>
@@ -68,7 +92,6 @@ export default function RegisterPage() {
               </div>
               <div>
                 <label>Email</label>
-                {/* We register "email" - TypeScript checked! */}
                 <Input {...register("email")} className="border p-2 block" />
                 {errors.email && (
                   <p style={{ color: "red" }}>{errors.email.message}</p>
@@ -77,7 +100,6 @@ export default function RegisterPage() {
 
               <div>
                 <label>Password</label>
-                {/* We register "password" - TypeScript checked! */}
                 <Input
                   type="password"
                   {...register("password")}
@@ -88,8 +110,12 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              <Button type="submit" className="bg-blue-500 text-white p-2">
-                Submit
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="bg-blue-500 text-white p-2"
+              >
+                {isPending ? "Creating Account" : "Create Account"}
               </Button>
             </form>
 
