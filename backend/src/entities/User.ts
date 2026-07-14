@@ -4,18 +4,18 @@ export class User {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column({ unique: true })
+  @Column({ type: "varchar", unique: true })
   email!: string;
 
-  @Column()
-  password!: string;
-
-  @Column()
-  role!: string;
-
-  @Column()
+  @Column({ type: "varchar" })
   name!: string;
 
-  @Column()
+  @Column({ type: "varchar" })
+  password!: string;
+
+  @Column({ type: "varchar", default: "user" })
+  role!: string;
+
+  @Column({ type: "varchar", nullable: true })
   phomeNumber!: string;
 }

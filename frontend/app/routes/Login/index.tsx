@@ -3,9 +3,45 @@ import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Demo from "@/components/Demo";
-import { useSearchParams } from "react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Navigate, useNavigate, useSearchParams } from "react-router";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+export const LoginSchema = z.object({
+  email: z.string().email("invalid emai adress"),
+  password: z.string().min(6, "password must contain at least 6 characters"),
+});
+type LoginInputs = z.infer<typeof LoginSchema>;
 export default function login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginInputs>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  const navigate = useNavigate();
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (loginData: LoginInputs) => {
+      const responce = await axios.post(
+        "http://localhost:3000/api/login",
+        loginData,
+      );
+      return responce.data;
+    },
+    onSuccess: () => navigate("/dashboard"),
+  });
+  const onSubmit = async (data: LoginInputs) => {
+    try {
+    } catch (error) {}
+  };
   const [searchParams] = useSearchParams();
   const hasRegistered = searchParams.get("registered") === "true";
   return (
@@ -30,18 +66,12 @@ export default function login() {
               </div>
             )}
             {/* Form */}
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Email Address
                 </label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  className="w-full"
-                  required
-                />
+                <Input {...login("email")} />
               </div>
 
               <div>

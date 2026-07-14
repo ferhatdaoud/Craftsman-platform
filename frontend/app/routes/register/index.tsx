@@ -35,7 +35,7 @@ export default function RegisterPage() {
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: RegisterInput) => {
       const responce = await axios.post(
-        "http://localhost:5000/api/register",
+        "http://localhost:3000/api/register",
         formData,
       );
       return responce.data;
@@ -84,14 +84,18 @@ export default function RegisterPage() {
             {/* Form - connected to handleSubmit */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
               <div>
-                <label>Name</label>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Name
+                </label>
                 <Input {...register("name")} className="border p-2 block" />
                 {errors.name && (
                   <p style={{ color: "red" }}>{errors.name.message}</p>
                 )}
               </div>
               <div>
-                <label>Email</label>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Email
+                </label>
                 <Input {...register("email")} className="border p-2 block" />
                 {errors.email && (
                   <p style={{ color: "red" }}>{errors.email.message}</p>
@@ -99,7 +103,9 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label>Password</label>
+                <label className="block text-sm font-medium text-foreground mb-2">
+                  Password
+                </label>
                 <Input
                   type="password"
                   {...register("password")}

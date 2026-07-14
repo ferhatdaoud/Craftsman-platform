@@ -2,7 +2,7 @@ import "reflect-metadata";
 import dotenv from "dotenv";
 dotenv.config();
 import { DataSource } from "typeorm";
-
+import { User } from "../entities/User.js";
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST || "localhost",
@@ -12,14 +12,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: ["src/entities/user.entity.ts"],
+  entities: [User],
   subscribers: [],
   migrations: [],
 });
-
-// try {
-//   await AppDataSource.initialize();
-//   console.log("Data source has beec initilized!");
-// } catch (error) {
-//   console.error("Error during Data Source initialization");
-// }
