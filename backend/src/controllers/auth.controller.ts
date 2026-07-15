@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source.js";
+import dotenv from "dotenv";
+dotenv.config();
 import { User } from "../entities/User.js";
 import * as bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 export class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
     try {
@@ -29,10 +32,13 @@ export class AuthController {
       });
 
       const savedUser = await userRepository.save(newUser);
+
       res.status(201).json({
         message: "user created succesfully",
         user: {
           name: savedUser.name,
+          email: savedUser.email,
+          userId: savedUser.id,
         },
       });
     } catch (error) {
@@ -58,11 +64,16 @@ export class AuthController {
         res.status(401).json({ message: "Invalid email or password" });
         return;
       }
+      const secret = process.env.JWT_SECRET;
+
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },
+        (process.env.JWT_SECRET as string) || "fallback",
+        { expiresIn: "7d" },
+      );
       res.status(200).json({
         message: "Logged in succesfully",
-        userId: user.id,
-        name: user.name,
-        email: user.email,
+        user: { userId: user.id, name: user.name, email: user.email },
       });
     } catch (error) {
       console.error("Login error", error);

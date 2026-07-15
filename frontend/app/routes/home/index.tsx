@@ -2,13 +2,6 @@ import type { Route } from "./+types/index";
 import { ArrowRight, Link, Wrench } from "lucide-react";
 import { Button } from "@base-ui/react";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">

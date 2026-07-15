@@ -15,7 +15,7 @@ export const LoginSchema = z.object({
   password: z.string().min(6, "password must contain at least 6 characters"),
 });
 type LoginInputs = z.infer<typeof LoginSchema>;
-export default function login() {
+export default function Login() {
   const {
     register,
     handleSubmit,
@@ -27,20 +27,26 @@ export default function login() {
       password: "",
     },
   });
+  console.log("Active Validation Errors:", errors);
+
   const navigate = useNavigate();
   const { mutate, isPending } = useMutation({
     mutationFn: async (loginData: LoginInputs) => {
-      const responce = await axios.post(
+      const response = await axios.post(
         "http://localhost:3000/api/login",
         loginData,
       );
-      return responce.data;
+      return response.data;
     },
     onSuccess: () => navigate("/dashboard"),
   });
   const onSubmit = async (data: LoginInputs) => {
     try {
-    } catch (error) {}
+      mutate(data);
+      console.log("onSubmit triggered! Client data is valid:", data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const [searchParams] = useSearchParams();
   const hasRegistered = searchParams.get("registered") === "true";
@@ -69,29 +75,33 @@ export default function login() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Email Address
+                  Email
                 </label>
-                <Input {...login("email")} />
+                <Input {...register("email")} className="border p-2 block" />
+                {errors.email && (
+                  <p style={{ color: "red" }}>{errors.email.message}</p>
+                )}
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Password
                 </label>
                 <Input
                   type="password"
-                  name="password"
-                  placeholder="••••••••"
-                  className="w-full"
-                  required
+                  {...register("password")}
+                  className="border p-2 block"
                 />
+                {errors.password && (
+                  <p style={{ color: "red" }}>{errors.password.message}</p>
+                )}
               </div>
 
               <Button
                 type="submit"
+                disabled={isPending}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium h-10 mt-6"
               >
-                Login
+                {isPending ? "login in" : "Login"}
               </Button>
             </form>
 
