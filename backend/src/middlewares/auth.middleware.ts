@@ -12,7 +12,7 @@ export function authenticateToken(
   res: Response,
   next: NextFunction,
 ): void {
-  const authHeader = req.headers["authorizaton"];
+  const authHeader = req.headers["authorization"];
 
   const token =
     authHeader && typeof authHeader === "string"

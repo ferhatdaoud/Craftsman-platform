@@ -27,7 +27,6 @@ export default function Login() {
       password: "",
     },
   });
-  console.log("Active Validation Errors:", errors);
 
   const navigate = useNavigate();
   const { mutate, isPending } = useMutation({
@@ -38,7 +37,10 @@ export default function Login() {
       );
       return response.data;
     },
-    onSuccess: () => navigate("/dashboard"),
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard/craftsman");
+    },
   });
   const onSubmit = async (data: LoginInputs) => {
     try {
