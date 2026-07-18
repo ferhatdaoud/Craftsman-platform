@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "experimentalDecorators": true /* Required for TypeORM Entities */,
+    "emitDecoratorMetadata": true /* Required for TypeORM Entities */,
+    "outDir": "./dist" /* Where compiled JS goes */,
+    "rootDir": "./src" /* Where your source TS files live */,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "src/@types/environment.d.ts"]
+}
