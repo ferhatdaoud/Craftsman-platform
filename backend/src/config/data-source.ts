@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { DataSource } from "typeorm";
 import { User } from "../entities/User.js";
+import { Service } from "../entities/services.js";
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST || "localhost",
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: false,
-  entities: [User],
+  entities: [User, Service],
   subscribers: [],
   migrations: [],
 });

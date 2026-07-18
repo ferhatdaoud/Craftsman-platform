@@ -17,5 +17,5 @@ export class User {
   role!: string;
 
   @Column({ type: "varchar", nullable: true })
-  phomeNumber!: string;
+  phoneNumber!: string;
 }
