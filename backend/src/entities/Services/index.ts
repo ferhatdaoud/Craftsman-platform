@@ -12,14 +12,14 @@ export class Service {
   userId!: string;
   @Column({ type: "varchar" })
   title!: string;
-  @Column({ type: "text" })
+  @Column({ type: "text", nullable: true })
   description!: string;
-  @Column({ type: "decimal", precision: 10, scale: 2 })
+  @Column({ type: "decimal", precision: 10, scale: 2, nullable: true })
   price!: number;
   @Column({ type: "simple-array", nullable: true })
   images?: string[];
   @Column({ type: "simple-array", nullable: true })
-  categories?: string;
+  category?: string[];
   @CreateDateColumn()
   createdAt!: Date;
 }

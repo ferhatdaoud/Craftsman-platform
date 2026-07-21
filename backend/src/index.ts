@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { AppDataSource } from "./config/data-source.js";
 import authRoutes from "./routes/auth.routes.js";
+import serviceRoutes from "./entities/Services/service.routes.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -15,3 +16,4 @@ AppDataSource.initialize().then(() => {
 });
 
 app.use("/api", authRoutes);
+app.use("/api", serviceRoutes);

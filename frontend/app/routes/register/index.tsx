@@ -1,12 +1,12 @@
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Wrench } from "lucide-react";
-import { Link, useNavigate } from "react-router"; // React Router Link component
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { z } from "zod";
+import { Link, useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { RegisterSchema, type RegisterInput } from "@/lib/validation";
 
 interface RegisterSchema {
   name: string;
@@ -14,17 +14,9 @@ interface RegisterSchema {
   password: string;
 }
 
-export const RegisterSchema = z.object({
-  name: z.string().min(3, "Name must at least 4 characters"),
-  email: z.string().email("invalid email adress"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-type RegisterInput = z.infer<typeof RegisterSchema>;
 export default function RegisterPage() {
-  const queryClient = useQueryClient();
   const {
     register,
-    watch,
     reset,
     formState: { errors },
     handleSubmit,
@@ -34,11 +26,11 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: RegisterInput) => {
-      const responce = await axios.post(
+      const response = await axios.post(
         "http://localhost:3000/api/register",
         formData,
       );
-      return responce.data;
+      return response.data;
     },
     onSuccess: () => {
       navigate("/login?registered=true");

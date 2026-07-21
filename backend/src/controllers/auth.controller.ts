@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source.js";
+import { User } from "../entities/User.js";
 import dotenv from "dotenv";
 dotenv.config();
-import { User } from "../entities/User.js";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
