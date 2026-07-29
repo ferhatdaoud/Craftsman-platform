@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source.js";
+import { User } from "../entities/user/user.entity.js";
 import dotenv from "dotenv";
 dotenv.config();
-import { User } from "../entities/User.js";
 import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 export class AuthController {
   static async register(req: Request, res: Response): Promise<void> {
     try {
-      const { email, name, password } = req.body;
+      const { email, name, password, role = "client" } = req.body;
       const userRepository = AppDataSource.getRepository(User);
       if (!name || !email || !password) {
         res
@@ -67,13 +67,18 @@ export class AuthController {
       }
 
       const token = jwt.sign(
-        { userId: user.id, email: user.email },
+        { userId: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET || "fallback",
         { expiresIn: "7d" },
       );
       res.status(200).json({
         message: "Logged in succesfully",
-        user: { userId: user.id, name: user.name, email: user.email },
+        user: {
+          userId: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
         token,
       });
     } catch (error) {
@@ -91,7 +96,12 @@ export class AuthController {
         return;
       }
       res.status(200).json({
-        user: { userId: user.id, name: user.name, email: user.email },
+        user: {
+          userId: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
       });
     } catch (error) {
       console.error("getMe error", error);

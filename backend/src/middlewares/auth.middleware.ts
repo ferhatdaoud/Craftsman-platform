@@ -5,6 +5,7 @@ export interface AuthenticatedRequest extends Request {
   user?: {
     userId: string;
     email: string;
+    role: string;
   };
 }
 export function authenticateToken(
@@ -30,6 +31,7 @@ export function authenticateToken(
     const decoded = jwt.verify(token, secret) as {
       userId: string;
       email: string;
+      role: string;
     };
 
     req.user = decoded;

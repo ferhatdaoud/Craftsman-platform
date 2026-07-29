@@ -5,16 +5,12 @@ import Footer from "@/components/Footer";
 import Demo from "@/components/Demo";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Navigate, useNavigate, useSearchParams } from "react-router";
-import z from "zod";
+import { useNavigate, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-export const LoginSchema = z.object({
-  email: z.string().email("invalid emai adress"),
-  password: z.string().min(6, "password must contain at least 6 characters"),
-});
-type LoginInputs = z.infer<typeof LoginSchema>;
+import { LoginSchema, type LoginInputs } from "@/lib/validation";
+
 export default function Login() {
   const {
     register,
