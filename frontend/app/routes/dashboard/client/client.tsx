@@ -1,9 +1,8 @@
 // app/routes/dashboard/index.tsx
 import DashboardHeader from "@/components/Dashboard-header";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
 import { Search, X } from "lucide-react";
 import { CraftsmanCard } from "@/components/Craftsman-card";
+import { Input } from "@/components/ui/input";
 
 export default function DashboardPage() {
   const isCustomer = true;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source.js";
-import { User } from "../entities/User.js";
+import { User } from "../entities/user/user.entity.js";
 import dotenv from "dotenv";
 dotenv.config();
 import * as bcrypt from "bcrypt";

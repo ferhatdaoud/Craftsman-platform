@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../config/data-source.js";
-import { Service } from "../entities/Services/index.js";
+import { Service } from "../entities/category/Category.entity.js";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware.js";
 export class ServiceController {
   static async createService(
@@ -37,7 +37,10 @@ export class ServiceController {
       res.status(500).json({ message: "internal server error" });
     }
   }
-  static async getServicesByUserId(req: Request, res: Response): Promise<void> {
+  static async getcategoriesByUserId(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
     try {
       const serviceRepository = AppDataSource.getRepository(Service);
       const { userId } = req.params;

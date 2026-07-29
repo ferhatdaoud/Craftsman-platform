@@ -47,7 +47,7 @@ const ProfileSection = ({ user }: ProfileSectionProps) => {
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm text-muted-foreground">Services</p>
             <AddServiceSheet
-              userId={user.id}
+              userId={user.userId}
               onSuccess={() =>
                 queryClient.invalidateQueries({ queryKey: ["services"] })
               }

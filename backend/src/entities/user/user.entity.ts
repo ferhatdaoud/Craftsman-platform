@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  JoinTable,
+  ManyToMany,
+} from "typeorm";
+import { Subcategory } from "../subcategory/Subcategory.entity.js";
 @Entity({ name: "users" })
 export class User {
   @PrimaryGeneratedColumn("uuid")
@@ -18,4 +25,12 @@ export class User {
 
   @Column({ type: "varchar", nullable: true })
   phoneNumber!: string;
+ 
+  @Column({ type: "varchar", nullable: true })
+  address!: string;
+
+  @ManyToMany(() => Subcategory, (sub) => sub.user)
+  @JoinTable({ name: "craftsman_services" })
+  subcategories!: Subcategory[];
+  category: any;
 }
